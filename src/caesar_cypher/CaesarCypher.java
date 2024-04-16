@@ -41,8 +41,8 @@ public class CaesarCypher {
     public String getCipherText(String text) {
         char[] chars = text.toCharArray();
         String cipherText = "";
-        for (int i = 0; i < chars.length; i++) {
-            Character cipherSymbol = getCipherSymbol(chars[i]);
+        for (char aChar : chars) {
+            Character cipherSymbol = getCipherSymbol(aChar);
             if (cipherSymbol == null) {
                 continue;
             }
