@@ -7,10 +7,15 @@ public class Main {
         CaesarCypher caesarCypher = new CaesarCypher();
 
         caesarCypher.setKey(3);
-        String text = "fд?:s";
-        // String text = "frs";
+        String text = "Чем хорошим сегодня себя занимаешь?";
+        System.out.println("Original text = " + text);
 
-        String cipherText = caesarCypher.getCipherText(text);
+        String cipherText = caesarCypher.cipherText(text);
         System.out.println("cipherText = " + cipherText);
+
+        String deCipherText = caesarCypher.deCipherText(cipherText);
+        System.out.println("deCipherText = " + deCipherText);
+
+        caesarCypher.deCipherText("попробуй-ка эТо!");
     }
 }
