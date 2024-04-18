@@ -1,5 +1,7 @@
 package caesar_cypher;
 
+import java.io.StringWriter;
+
 public class CaesarCypher {
 
     private static final char[] ALPHABET = {'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м',
@@ -40,16 +42,16 @@ public class CaesarCypher {
 
     public String cipherText(String text) {
         char[] chars = text.toCharArray();
-        String cipherText = "";
+        StringBuilder cipherText = new StringBuilder();
         for (char aChar : chars) {
             Character cipherCharacter = cipherCharacter(aChar);
             if (cipherCharacter == null) {
                 continue;
             }
-            cipherText += cipherCharacter;
+            cipherText.append(cipherCharacter);
         }
 
-        return cipherText;
+        return cipherText.toString();
     }
 
     private int getCipherCharacterIndex(char cipherCharacter) {
@@ -74,12 +76,12 @@ public class CaesarCypher {
 
     public String deCipherText(String cipherText) {
         char[] cipherChars = cipherText.toCharArray();
-        String text = "";
+        StringBuilder text = new StringBuilder();
         for (char cipherChar : cipherChars) {
             char character = deCipherCharacter(cipherChar);
-            text += character;
+            text.append(character);
         }
 
-        return text;
+        return text.toString();
     }
 }
