@@ -1,22 +1,36 @@
 package caesar_cypher;
 
-import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class CaesarCypher {
 
     private static final char[] ALPHABET = {'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м',
             'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я', '.',
             ',', '«', '»', '"', '\'', ':', '-', '!', '?', ' '};
+    private static final String MSG_FOR_KEY = "Default key value (%d) applied.\n\n";
 
     private final int alphabetLength = ALPHABET.length;
-    private int key;
+    private final Scanner console = new Scanner(System.in);
+    private int key = 3;
 
     public CaesarCypher() {
         System.out.println(".:: Caesar cypher game ::.\n");
     }
 
-    public void setKey(int key) {
-        this.key = key;
+    public void setKey() {
+        System.out.printf("\nEnter the key (0 - %d): ", alphabetLength * 2 + 7);
+        if (console.hasNextInt()) {
+            int tmpKey = console.nextInt();
+            if (tmpKey < 0) {
+                System.out.printf(MSG_FOR_KEY, key);
+            } else {
+                key = tmpKey;
+            }
+        } else {
+            System.out.printf(MSG_FOR_KEY, key);
+        }
     }
 
     private Integer getCharacterIndex(char character) {
@@ -40,7 +54,7 @@ public class CaesarCypher {
         }
     }
 
-    public String cipherText(String text) {
+    private String cipherText(String text) {
         char[] chars = text.toCharArray();
         StringBuilder cipherText = new StringBuilder();
         for (char aChar : chars) {
@@ -52,6 +66,16 @@ public class CaesarCypher {
         }
 
         return cipherText.toString();
+    }
+
+    public List<String> cipherFileContent(List<String> fileContent) {
+        List<String> cipherFileContent = new ArrayList<>();
+        for (String line : fileContent) {
+            String cipherText = cipherText(line);
+            cipherFileContent.add(cipherText);
+        }
+
+        return cipherFileContent;
     }
 
     private int getCipherCharacterIndex(char cipherCharacter) {
@@ -74,7 +98,7 @@ public class CaesarCypher {
         }
     }
 
-    public String deCipherText(String cipherText) {
+    private String deCipherText(String cipherText) {
         char[] cipherChars = cipherText.toCharArray();
         StringBuilder text = new StringBuilder();
         for (char cipherChar : cipherChars) {
@@ -83,5 +107,15 @@ public class CaesarCypher {
         }
 
         return text.toString();
+    }
+
+    public List<String> deCipherFileContent(List<String> cipherFileContent) {
+        List<String> fileContent = new ArrayList<>();
+        for (String line : cipherFileContent) {
+            String deCipherText = deCipherText(line);
+            fileContent.add(deCipherText);
+        }
+
+        return fileContent;
     }
 }
