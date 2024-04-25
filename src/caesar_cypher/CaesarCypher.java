@@ -20,10 +20,11 @@ public class CaesarCypher {
     }
 
     public void setKey() {
-        System.out.printf("\nEnter the key (0 - %d): ", alphabetLength * 2 + 7);
+        int maxLimit = alphabetLength * 2 + 7;
+        System.out.printf("\nEnter the key (0 - %d): ", maxLimit);
         if (console.hasNextInt()) {
             int tmpKey = console.nextInt();
-            if (tmpKey < 0) {
+            if (tmpKey < 0 || tmpKey > maxLimit) {
                 System.out.printf(MSG_FOR_KEY, key);
             } else {
                 key = tmpKey;
@@ -44,76 +45,76 @@ public class CaesarCypher {
         return null;
     }
 
-    private Character cipherCharacter(char character) {
-        Integer charIndex = getCharacterIndex(character);
-        if (charIndex == null) {
+    private Character encryptCharacter(char character) {
+        Integer characterIndex = getCharacterIndex(character);
+        if (characterIndex == null) {
             return null;
         } else {
-            int cipherIndex = (charIndex + key) % alphabetLength;
-            return ALPHABET[cipherIndex];
+            int indexOfEncryptedCharacter = (characterIndex + key) % alphabetLength;
+            return ALPHABET[indexOfEncryptedCharacter];
         }
     }
 
-    private String cipherText(String text) {
-        char[] chars = text.toCharArray();
-        StringBuilder cipherText = new StringBuilder();
-        for (char aChar : chars) {
-            Character cipherCharacter = cipherCharacter(aChar);
-            if (cipherCharacter == null) {
+    private String encryptText(String text) {
+        char[] characters = text.toCharArray();
+        StringBuilder encryptedText = new StringBuilder();
+        for (char character : characters) {
+            Character encryptedCharacter = encryptCharacter(character);
+            if (encryptedCharacter == null) {
                 continue;
             }
-            cipherText.append(cipherCharacter);
+            encryptedText.append(encryptedCharacter);
         }
 
-        return cipherText.toString();
+        return encryptedText.toString();
     }
 
-    public List<String> cipherFileContent(List<String> fileContent) {
-        List<String> cipherFileContent = new ArrayList<>();
+    public List<String> encryptFileContent(List<String> fileContent) {
+        List<String> encryptedFileContent = new ArrayList<>();
         for (String line : fileContent) {
-            String cipherText = cipherText(line);
-            cipherFileContent.add(cipherText);
+            String encryptedText = encryptText(line);
+            encryptedFileContent.add(encryptedText);
         }
 
-        return cipherFileContent;
+        return encryptedFileContent;
     }
 
-    private int getCipherCharacterIndex(char cipherCharacter) {
+    private int getEncryptedCharacterIndex(char encryptedCharacter) {
         for (int i = 0; i < alphabetLength; i++) {
-            if (ALPHABET[i] == cipherCharacter) {
+            if (ALPHABET[i] == encryptedCharacter) {
                 return i;
             }
         }
 
-        throw new RuntimeException(String.format("There is no such character '%s' in the alphabet.", cipherCharacter));
+        throw new RuntimeException(String.format("There is no such character '%s' in the alphabet.", encryptedCharacter));
     }
 
-    private char deCipherCharacter(char cipherCharacter) {
-        int cipherIndex = getCipherCharacterIndex(cipherCharacter);
-        int charIndex = (cipherIndex - key) % alphabetLength;
-        if (charIndex < 0) {
-            return ALPHABET[alphabetLength + charIndex];
+    private char decryptCharacter(char encryptedCharacter) {
+        int encryptedCharacterIndex = getEncryptedCharacterIndex(encryptedCharacter);
+        int characterIndex = (encryptedCharacterIndex - key) % alphabetLength;
+        if (characterIndex < 0) {
+            return ALPHABET[alphabetLength + characterIndex];
         } else {
-            return ALPHABET[charIndex];
+            return ALPHABET[characterIndex];
         }
     }
 
-    private String deCipherText(String cipherText) {
-        char[] cipherChars = cipherText.toCharArray();
+    private String decryptText(String encryptedText) {
+        char[] encryptedCharacters = encryptedText.toCharArray();
         StringBuilder text = new StringBuilder();
-        for (char cipherChar : cipherChars) {
-            char character = deCipherCharacter(cipherChar);
+        for (char encryptedCharacter : encryptedCharacters) {
+            char character = decryptCharacter(encryptedCharacter);
             text.append(character);
         }
 
         return text.toString();
     }
 
-    public List<String> deCipherFileContent(List<String> cipherFileContent) {
+    public List<String> decryptFileContent(List<String> encryptedFileContent) {
         List<String> fileContent = new ArrayList<>();
-        for (String line : cipherFileContent) {
-            String deCipherText = deCipherText(line);
-            fileContent.add(deCipherText);
+        for (String line : encryptedFileContent) {
+            String decryptedText = decryptText(line);
+            fileContent.add(decryptedText);
         }
 
         return fileContent;

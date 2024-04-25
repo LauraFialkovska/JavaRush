@@ -7,37 +7,41 @@ public class Main {
 
     public static void main(String[] args) {
 
+        String message = "There is no such option, try the game again!";
         Scanner console = new Scanner(System.in);
         CaesarCypher caesarCypher = new CaesarCypher();
         FileManager fileManager = new FileManager();
         List<String> fileContent;
-        List<String> cipherFileContent;
+        List<String> encryptedFileContent;
 
         System.out.println("Menu:");
         System.out.println("1 - to encrypt");
         System.out.println("2 - to decrypt");
         System.out.print("\nSelect the action you want: ");
-        int choice = console.nextInt();
 
-        switch (choice) {
-            case 1:
-                caesarCypher.setKey();
-                fileManager.setSourcePath();
-                fileManager.setDestinationPath();
-                fileContent = fileManager.readFile();
-                cipherFileContent = caesarCypher.cipherFileContent(fileContent);
-                fileManager.writeToFile(cipherFileContent);
-                break;
-            case 2:
-                caesarCypher.setKey();
-                fileManager.setSourcePath();
-                fileManager.setDestinationPath();
-                cipherFileContent = fileManager.readFile();
-                fileContent = caesarCypher.deCipherFileContent(cipherFileContent);
-                fileManager.writeToFile(fileContent);
-                break;
-            default:
-                System.out.println("Only two options are available, try the game again!");
+        if (console.hasNextInt()) {
+            switch (console.nextInt()) {
+                case 1:
+                    caesarCypher.setKey();
+                    fileManager.setSourcePath();
+                    fileManager.setDestinationPath();
+                    fileContent = fileManager.readFile();
+                    encryptedFileContent = caesarCypher.encryptFileContent(fileContent);
+                    fileManager.writeFile(encryptedFileContent);
+                    break;
+                case 2:
+                    caesarCypher.setKey();
+                    fileManager.setSourcePath();
+                    fileManager.setDestinationPath();
+                    encryptedFileContent = fileManager.readFile();
+                    fileContent = caesarCypher.decryptFileContent(encryptedFileContent);
+                    fileManager.writeFile(fileContent);
+                    break;
+                default:
+                    System.out.println(message);
+            }
+        } else {
+            System.out.println(message);
         }
     }
 }
