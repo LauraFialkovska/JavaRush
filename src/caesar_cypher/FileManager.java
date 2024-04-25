@@ -15,22 +15,15 @@ public class FileManager {
     public void setSourcePath() {
         System.out.print("Enter the path of source file: ");
         sourcePath = Path.of(console.nextLine());
-        validateFileExtension(sourcePath);
         validateSource();
+        validateFileExtension(sourcePath);
     }
 
     public void setDestinationPath() {
         System.out.print("Enter the path of destination file: ");
         destinationPath = Path.of(console.nextLine());
-        validateFileExtension(destinationPath);
         validateDestination();
-    }
-
-    private void validateFileExtension(Path path) {
-        Path fileName = path.getFileName();
-        if (!fileName.toString().endsWith(".txt")) {
-            throw new RuntimeException(String.format("File '%s' is not text file (*.txt).", path));
-        }
+        validateFileExtension(destinationPath);
     }
 
     private void validateSource() {
@@ -56,6 +49,13 @@ public class FileManager {
         String fileName = destinationPath.getFileName().toString();
         if (fileName.contains(".bash_profile") || fileName.contains("hosts")) {
             throw new RuntimeException(String.format("File '%s' is invalid.", destinationPath));
+        }
+    }
+
+    private void validateFileExtension(Path path) {
+        Path fileName = path.getFileName();
+        if (!fileName.toString().endsWith(".txt")) {
+            throw new RuntimeException(String.format("File '%s' is not text file (*.txt).", path));
         }
     }
 
